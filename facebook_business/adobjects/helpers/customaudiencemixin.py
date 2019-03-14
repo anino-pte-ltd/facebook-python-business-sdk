@@ -98,8 +98,8 @@ class CustomAudienceMixin:
                         key = key.strip(" \t\r\n\0\x0B.").lower()
                         key = cls.normalize_key(schema[counter],
                                                            str(key))
-                        if schema[counter] != \
-                                cls.Schema.MultiKeySchema.extern_id:
+                        if schema[counter] not in (cls.Schema.MultiKeySchema.extern_id,
+                                                   cls.Schema.MultiKeySchema.appuid):
                             if isinstance(key, six.text_type):
                                 key = key.encode('utf8')
                             key = hashlib.sha256(key).hexdigest()
@@ -140,7 +140,8 @@ class CustomAudienceMixin:
 
         if(key_name == cls.Schema.MultiKeySchema.extern_id or
            key_name == cls.Schema.MultiKeySchema.email or
-           key_name == cls.Schema.MultiKeySchema.madid):
+           key_name == cls.Schema.MultiKeySchema.madid or
+           key_name == cls.Schema.MultiKeySchema.appuid):
             return key_value
 
         if(key_name == cls.Schema.MultiKeySchema.phone):
